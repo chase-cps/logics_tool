@@ -11,9 +11,8 @@
 #include "simplify.hh"
 
 using namespace chase;
-using namespace chase;
 
-chase::Console::Console(System *system, std::string outDir, bool verbose) :
+Console::Console(System *system, std::string outDir, bool verbose) :
     _system(system), _outDir(outDir), _verbose(verbose)
 {
     simplify(_system);
