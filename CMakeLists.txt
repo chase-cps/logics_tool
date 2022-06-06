@@ -23,8 +23,6 @@ include_directories(
     ${CHASEPATH}/chase/include
     ${CHASEPATH}/chase/include/utilities
     ${CHASEPATH}/chase/include/rerpesentation
-    #    ${CHASEPATH}/chase/include/frontends
-    #    ${CHASEPATH}/chase/include/frontends/LogicsParser
     ${CHASEPATH}/chase/include/backends
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/include/LogicsParser
@@ -40,21 +38,35 @@ set(Logics_PARSER_SRCS
 
 set(Logics_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
-set(Logics_TOOL_SRCS
+set(Logics_Library_SRCS
         ${Logics_SRC_DIR}/Console.cc
         ${Logics_SRC_DIR}/Console_commands.cc
         ${Logics_PARSER_SRCS}
         ${Logics_SRC_DIR}/LogicsSpecsBuilder.cc
 )
 
+set(Logics_tool_SRCS
+    ${Logics_Library_SRCS}
+    ${Logics_SRC_DIR}/main.cc)
+
 
 if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
+add_library(chase_logicsLang
+    ${Logics_Library_SRCS}
+    )
+
+install(TARGETS chase_logicsLang
+    DESTINATION chase/lib)
+
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
+    DESTINATION chase/include/frontends
+    )
+
 add_executable(logics_tool 
-    ${Logics_TOOL_SRCS}
-    ${Logics_SRC_DIR}/main.cc)
+    ${Logics_tool_SRCS})
 
 target_link_libraries(logics_tool 
     chase
@@ -71,7 +83,7 @@ install(TARGETS logics_tool DESTINATION chase/bin)
 pybind11_add_module(
     pychase_logicsLang MODULE
     src/bindings.cc
-    ${Logics_TOOL_SRCS}
+    ${Logics_Library_SRCS}
     )
 
 target_link_libraries(pychase_logicsLang PRIVATE
