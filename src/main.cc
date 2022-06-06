@@ -4,11 +4,51 @@
  *              This project is released under the 3-Clause BSD License.
  * */
 
-#include "main.hh"
+#include "chase-core.hh"
+#include "LogicsSpecsBuilder.hh"
+
+#include <unistd.h>
+#include <fstream>
+#include <sys/stat.h>
+
+
 #include "Console.hh"
 #include "Factory.hh"
 
 using namespace chase;
+
+typedef struct _params
+{
+    /// @brief Input file path.
+    std::string fileIn;
+    /// @brief Commands file path.
+    std::string cmdFile;
+
+    /// @brief Output directory path.
+    std::string outDir;
+
+    /// @brief Verbose flag. Execution is verbose when flag is set to true.
+    bool verbose;
+
+    _params() :
+        fileIn("chase_spec.txt"),
+        cmdFile(""),
+        outDir(""),
+        verbose(false)
+    {
+    }
+} Params;
+
+
+/// @brief Method parsing the input command line.
+/// @param argc The number of parameters to parse.
+/// @param argv The array of parameters.
+/// @return A structure storing all the parameters sorted out.
+Params * parseCmdLine( int argc, char * argv[] );
+
+/// @brief Method printing usage banner of the tool.
+void printHelp();
+
 
 int main( int argc, char * argv[] )
 {
@@ -43,7 +83,7 @@ int main( int argc, char * argv[] )
     delete system;
 }
 
-Params * chase::parseCmdLine(int argc, char **argv) {
+Params * parseCmdLine(int argc, char **argv) {
     auto *parameters = new Params();
 
     opterr = 0;
@@ -86,7 +126,7 @@ Params * chase::parseCmdLine(int argc, char **argv) {
 
     struct stat info;
     if(stat (parameters->outDir.c_str(), &info) != 0 && !parameters->outDir
-    .empty()) {
+            .empty()) {
         if (mkdir(parameters->outDir.c_str(), 0755) == -1)
         {
             std::cout << strerror(errno) << std::endl;
@@ -97,17 +137,17 @@ Params * chase::parseCmdLine(int argc, char **argv) {
     return parameters;
 }
 
-void chase::printHelp()
+void printHelp()
 {
     std::cerr << "[USAGE]\n" <<
-              "logics_frontend -i input_file -c commands_file [-V]"
-              << std::endl <<
-              std::endl <<
-              "\t-i : specifies the txt input file containing the specifications."
-              << std::endl <<
-              "\t-c : command file to be executed."
-              << std::endl <<
-              "\t-o : output directory path."
-              << std::endl <<
-              "\t-V : activate the verbose mode." << std::endl;
+        "logics_frontend -i input_file -c commands_file [-V]"
+        << std::endl <<
+        std::endl <<
+        "\t-i : specifies the txt input file containing the specifications."
+        << std::endl <<
+        "\t-c : command file to be executed."
+        << std::endl <<
+        "\t-o : output directory path."
+        << std::endl <<
+        "\t-V : activate the verbose mode." << std::endl;
 }

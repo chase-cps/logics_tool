@@ -11,7 +11,7 @@
 #include "Console.hh"
 #include "LogicsSpecsBuilder.hh"
 
-#include "LogicsContractsBasedVisitor.h"
-#include "LogicsContractsLexer.h"
-#include "LogicsContractsParser.h"
-#include "LogicsContractsVisitor.h"
+#include "LogicsParser/LogicsContractsBasedVisitor.h"
+#include "LogicsParser/LogicsContractsLexer.h"
+#include "LogicsParser/LogicsContractsParser.h"
+#include "LogicsParser/LogicsContractsVisitor.h"
