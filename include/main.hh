@@ -10,7 +10,6 @@
 #include "chase-core.hh"
 #include "LogicsSpecsBuilder.hh"
 
-
 #include <unistd.h>
 #include <fstream>
 #include <sys/stat.h>

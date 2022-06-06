@@ -23,18 +23,28 @@ include_directories(
     ${CHASEPATH}/chase/include
     ${CHASEPATH}/chase/include/utilities
     ${CHASEPATH}/chase/include/rerpesentation
-    ${CHASEPATH}/chase/include/frontends
-    ${CHASEPATH}/chase/include/frontends/LogicsParser
+    #    ${CHASEPATH}/chase/include/frontends
+    #    ${CHASEPATH}/chase/include/frontends/LogicsParser
     ${CHASEPATH}/chase/include/backends
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include/LogicsParser
 )
+
+set(Logics_PARSER_SRC_DIR ${PROJECT_SOURCE_DIR}/src/LogicsParser)
+
+set(Logics_PARSER_SRCS
+        ${Logics_PARSER_SRC_DIR}/LogicsContractsBaseVisitor.cpp
+        ${Logics_PARSER_SRC_DIR}/LogicsContractsLexer.cpp
+        ${Logics_PARSER_SRC_DIR}/LogicsContractsVisitor.cpp
+        ${Logics_PARSER_SRC_DIR}/LogicsContractsParser.cpp)
 
 set(Logics_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 set(Logics_TOOL_SRCS
-        ${Logics_SRC_DIR}/main.cc
         ${Logics_SRC_DIR}/Console.cc
         ${Logics_SRC_DIR}/Console_commands.cc
+        ${Logics_PARSER_SRCS}
+        ${Logics_SRC_DIR}/LogicsSpecsBuilder.cc
 )
 
 
@@ -42,10 +52,12 @@ if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
-add_executable(logics_tool ${Logics_TOOL_SRCS})
+add_executable(logics_tool 
+    ${Logics_TOOL_SRCS}
+    ${Logics_SRC_DIR}/main.cc)
+
 target_link_libraries(logics_tool 
     chase
-    chase_ll
     chase_backends
     antlr4-runtime)
 
@@ -57,20 +69,22 @@ target_link_directories(
 install(TARGETS logics_tool DESTINATION chase/bin)
 
 pybind11_add_module(
-    pychase_logics_console MODULE
+    pychase_logicsLang MODULE
     src/bindings.cc
-    src/Console.cc
-    src/Console_commands.cc)
+    ${Logics_TOOL_SRCS}
+    )
 
-target_link_libraries(pychase_logics_console PRIVATE
-    chase
-    chase_backends)
+target_link_libraries(pychase_logicsLang PRIVATE
+    chase_backends
+    antlr4-runtime
+    chase)
 
 target_link_directories(
-    pychase_logics_console
+    pychase_logicsLang
     PRIVATE ${CHASEPATH}/chase/lib
+    PRIVATE ${CHASEPATH}/third_party/antlr4/lib
     )
  
-install(TARGETS pychase_logics_console
+install(TARGETS pychase_logicsLang
     EXPORT pychaseTargets
     DESTINATION chase/lib)

@@ -2,6 +2,7 @@
 #include <pybind11/stl.h>
 #include "chase-core.hh"
 #include "Console.hh"
+#include "LogicsSpecsBuilder.hh"
 
 namespace py = pybind11;
 using namespace chase;
@@ -9,11 +10,23 @@ using namespace chase;
 template <typename... Args>
 using overload_cast_ = pybind11::detail::overload_cast_impl<Args...>;
 
-PYBIND11_MODULE(pychase_logics_console, m) {
-        /*
-         * LOGICS CONSOLE
-         */
-        py::class_<Console,
+PYBIND11_MODULE(pychase_logicsLang, m) {
+
+    /*
+     * Parser and Front-end.
+     */    
+    py::class_<LogicsSpecsBuilder,
+        std::unique_ptr<LogicsSpecsBuilder,
+        py::nodelete> >(m, "LogicsSpecsBuilder")
+        .def(py::init<>())
+        .def("getSystem", &LogicsSpecsBuilder::getSystem)
+        .def("parseSpecificationFile", &LogicsSpecsBuilder::parseSpecificationFile,
+             py::arg("infile").none(false));
+
+    /*
+     * Logics Console.
+     */
+    py::class_<Console,
         std::unique_ptr<Console,
         py::nodelete> >(m, "Console")
             .def(py::init<System *, std::string>())
