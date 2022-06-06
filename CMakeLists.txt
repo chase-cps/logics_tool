@@ -70,7 +70,7 @@ add_executable(logics_tool
 
 target_link_libraries(logics_tool 
     chase
-    chase_backends
+    chase-backends
     antlr4-runtime)
 
 target_link_directories(
@@ -87,7 +87,7 @@ pybind11_add_module(
     )
 
 target_link_libraries(pychase_logicsLang PRIVATE
-    chase_backends
+    chase-backends
     antlr4-runtime
     chase)
 
