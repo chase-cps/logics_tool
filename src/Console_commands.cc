@@ -289,6 +289,27 @@ int Console::_execShow(std::vector<std::string> &tokens)
     return 1;
 }
 
+int Console::_simplify(std::vector<std::string> &tokens) {
+    if(tokens.size() == 1) {
+        simplify(_system);
+        return 1;
+    }
+    else {
+        for(size_t t = 1; t < tokens.size(); ++t){
+            bool found = false;
+            for(auto c : _system->getContractsSet()){
+                if(c->getName()->getString() == tokens[t]){
+                    found = true;
+                    simplify(c);
+                }
+            }
+            if(found == false)
+                messageWarning("Contract " + tokens[t] + " not found.");
+        }
+    }
+    return 1;
+}
+
 int Console::_checkRefinement(std::vector<std::string> &tokens) {
     std::string fileOut = _outDir + "output.smv";
     if(tokens.size() > 3)

@@ -15,7 +15,6 @@ using namespace chase;
 Console::Console(System *system, std::string outDir, bool verbose) :
     _system(system), _outDir(outDir), _verbose(verbose)
 {
-    simplify(_system);
 }
 
 int Console::run(std::string cmd)
@@ -48,7 +47,6 @@ int Console::run(std::string cmd)
             << "\n\tHINT:\tType help to see instructions.\n" <<
             std::endl;
     }
-    simplify(_system);
     return 1;
 }
 
@@ -91,6 +89,12 @@ int Console::_execCommand(std::string cmd)
         return _computeQuotient(tokens);
     else if(tokens[0] == "show")
         return _execShow(tokens);
+    else if(tokens[0] == "simplify")
+        return _simplify(tokens);
+    else if(tokens[0] == "clear"){
+        std::cout << "\033[2J\033[1;1H";
+        return 1;
+    }
     else if(tokens[0] == "break") {
         std::cin.get();
         return 1;
