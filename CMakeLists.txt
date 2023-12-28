@@ -105,3 +105,10 @@ target_link_directories(
 install(TARGETS pychase_logicsLang
     EXPORT pychaseTargets
     DESTINATION chase/lib)
+
+add_custom_target(install_logics_tool
+        "${CMAKE_COMMAND}" --build "${CMAKE_BINARY_DIR}" --target install
+        DEPENDS ${logics_tool}
+        DEPENDS ${pychase_logicsLang}
+        DEPENDS ${chase_logicsLang}
+        COMMENT "Installing Logics Tool")
