@@ -83,6 +83,11 @@ target_link_directories(
     PRIVATE ${CHASEPATH}/chase/lib
     PRIVATE ${CHASEPATH}/third_party/antlr4/lib)
 
+# Set rpath for macOS
+set_target_properties(logics_tool PROPERTIES
+    INSTALL_RPATH "@executable_path/../lib;@executable_path/../../third_party/antlr4/lib"
+)
+
 install(TARGETS logics_tool DESTINATION chase/bin)
 
 pybind11_add_module(
@@ -101,7 +106,7 @@ target_link_directories(
     PRIVATE ${CHASEPATH}/chase/lib
     PRIVATE ${CHASEPATH}/third_party/antlr4/lib
     )
- 
+
 install(TARGETS pychase_logicsLang
     EXPORT pychaseTargets
     DESTINATION chase/lib)
