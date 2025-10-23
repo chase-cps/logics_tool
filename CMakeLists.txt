@@ -84,9 +84,11 @@ target_link_directories(
     PRIVATE ${CHASEPATH}/third_party/antlr4/lib)
 
 # Set rpath for macOS
-set_target_properties(logics_tool PROPERTIES
-    INSTALL_RPATH "@executable_path/../lib;@executable_path/../../third_party/antlr4/lib"
-)
+if(APPLE)
+    set_target_properties(logics_tool PROPERTIES
+        INSTALL_RPATH "@executable_path/../lib;@executable_path/../../third_party/antlr4/lib"
+    )
+endif()
 
 install(TARGETS logics_tool DESTINATION chase/bin)
 
