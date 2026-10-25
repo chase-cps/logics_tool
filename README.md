@@ -17,8 +17,9 @@ The grammar of the language is in `grammar/LogicsContracts.g4`.
 > - -V _Enables verbose mode._
 
 The console provides the following commands: `show`, `compose`, `conjoin`,
-`disjoin`, `merge`, `divide` (quotient), `separate`, `saturate`, `simplify`,
-`refines`, `verify`, and `synthesize`. The names `conjunction`, `quotient`,
+`disjoin`, `merge`, `divide` (quotient), `separate`, `imply`, `coimply`,
+`invert` (reciprocal), `saturate`, `simplify`, `refines`, `verify`, and
+`synthesize`. The names `conjunction`, `quotient`,
 and `refinement` of the first version are still accepted.
 The `help` command shows their description.
 

@@ -93,6 +93,21 @@ namespace chase
         /// @return 1 if the command has been executed properly, 0 otherwise.
         int _computeMerging( std::vector< std::string >& tokens );
 
+        /// @brief Method computing the implication of two contracts.
+        /// @param tokens Tokens of the command.
+        /// @return 1 if the command has been executed properly, 0 otherwise.
+        int _computeImplication( std::vector< std::string >& tokens );
+
+        /// @brief Method computing the coimplication of two contracts.
+        /// @param tokens Tokens of the command.
+        /// @return 1 if the command has been executed properly, 0 otherwise.
+        int _computeCoimplication( std::vector< std::string >& tokens );
+
+        /// @brief Method computing the reciprocal of a contract.
+        /// @param tokens Tokens of the command.
+        /// @return 1 if the command has been executed properly, 0 otherwise.
+        int _computeReciprocal( std::vector< std::string >& tokens );
+
         /// @brief Method executing a binary operation of the contract algebra
         /// (command contract_1 contract_2 result [mode]).
         /// @param tokens Tokens of the command.

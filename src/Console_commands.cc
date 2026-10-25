@@ -443,6 +443,31 @@ int Console::_computeMerging(std::vector<std::string> &tokens) {
     return _binaryOperation(tokens, Contract::merging);
 }
 
+int Console::_computeImplication(std::vector<std::string> &tokens) {
+    return _binaryOperation(tokens, Contract::implication);
+}
+
+int Console::_computeCoimplication(std::vector<std::string> &tokens) {
+    return _binaryOperation(tokens, Contract::coimplication);
+}
+
+int Console::_computeReciprocal(std::vector<std::string> &tokens) {
+    if(tokens.size() < 3) {
+        messageWarning("Wrong command.");
+        _printHelp(tokens[0]);
+        return 1;
+    }
+    for (auto c : _system->getContractsSet())
+    {
+        if(c->getName()->getString() == tokens[1] ) {
+            _system->addContract(Contract::reciprocal(c, tokens[2]));
+            return 1;
+        }
+    }
+    messageWarning("Impossible to find the contract.");
+    return 1;
+}
+
 int Console::_binaryOperation(
         std::vector<std::string> &tokens,
         Contract * (*operation)(Contract *, Contract *,
