@@ -9,6 +9,7 @@
 
 #include <unistd.h>
 #include <fstream>
+#include <stdexcept>
 #include <sys/stat.h>
 
 
@@ -52,35 +53,40 @@ void printHelp();
 
 int main( int argc, char * argv[] )
 {
-    auto params = parseCmdLine(argc, argv);
+    // messageError throws after printing the error: exit with an error code.
+    try {
+        auto params = parseCmdLine(argc, argv);
 
-    LogicsSpecsBuilder builder;
-    builder.parseSpecificationFile(params->fileIn);
+        LogicsSpecsBuilder builder;
+        builder.parseSpecificationFile(params->fileIn);
 
-    System * system = builder.getSystem();
+        System * system = builder.getSystem();
 
-    Console console(system, params->outDir, params->verbose);
+        Console console(system, params->outDir, params->verbose);
 
-    if(params->cmdFile.empty()) {
-        while (console.run());
-    } else {
-        std::ifstream cmds;
-        std::string line;
-        cmds.open(params->cmdFile.c_str());
-        int ret = 1;
-        while(std::getline(cmds, line) && ret != 0)
-        {
-            if(line == "\r" || line == "\n") continue;
-            size_t semicolon = line.find(';');
-            if( semicolon == std::string::npos ) {
-                messageWarning("Missing semicolon. Skipped command: " + line);
-                continue;
+        if(params->cmdFile.empty()) {
+            while (console.run());
+        } else {
+            std::ifstream cmds;
+            std::string line;
+            cmds.open(params->cmdFile.c_str());
+            int ret = 1;
+            while(std::getline(cmds, line) && ret != 0)
+            {
+                if(line == "\r" || line == "\n") continue;
+                size_t semicolon = line.find(';');
+                if( semicolon == std::string::npos ) {
+                    messageWarning("Missing semicolon. Skipped command: " + line);
+                    continue;
+                }
+                line = line.substr(0, semicolon);
+                ret = console.run(line);
             }
-            line = line.substr(0, semicolon);
-            ret = console.run(line);
         }
+        delete system;
+    } catch (const std::exception &) {
+        return -1;
     }
-    delete system;
 }
 
 Params * parseCmdLine(int argc, char **argv) {
