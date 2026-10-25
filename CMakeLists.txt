@@ -4,7 +4,9 @@
 ###############################################################################
 
 cmake_minimum_required (VERSION 3.10)
-set(CMAKE_BUILD_TYPE DEBUG)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+endif()
 set(CMAKE_C_FLAGS_DEBUG "-O0 -Wall -Wextra -pedantic -ggdb -fPIC")
 set(CMAKE_C_FLAGS_RELEASE "-O3 -fPIC")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -Wextra -pedantic -ggdb -fPIC")
@@ -27,7 +29,7 @@ include_directories(
     ${CHASEPATH}/third_party/antlr4/include
     ${CHASEPATH}/chase/include
     ${CHASEPATH}/chase/include/utilities
-    ${CHASEPATH}/chase/include/rerpesentation
+    ${CHASEPATH}/chase/include/representation
     ${CHASEPATH}/chase/include/backends
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/include/LogicsParser
@@ -111,6 +113,16 @@ target_link_directories(
     PRIVATE ${CHASEPATH}/chase/lib
     PRIVATE ${CHASEPATH}/third_party/antlr4/lib
     )
+
+# Set rpath for the Python module (installed in chase/lib)
+if(APPLE)
+    set_target_properties(pychase_logicsLang PROPERTIES
+        INSTALL_RPATH "@loader_path;@loader_path/../../third_party/antlr4/lib"
+    )
+elseif(UNIX)
+    set_target_properties(pychase_logicsLang PROPERTIES
+        INSTALL_RPATH "\$ORIGIN;\$ORIGIN/../../third_party/antlr4/lib")
+endif()
 
 install(TARGETS pychase_logicsLang
     EXPORT pychaseTargets

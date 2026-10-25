@@ -140,7 +140,7 @@ Params * parseCmdLine(int argc, char **argv) {
 void printHelp()
 {
     std::cerr << "[USAGE]\n" <<
-        "logics_frontend -i input_file -c commands_file [-V]"
+        "logics_tool -i input_file [-o output_dir] [-c commands_file] [-V]"
         << std::endl <<
         std::endl <<
         "\t-i : specifies the txt input file containing the specifications."

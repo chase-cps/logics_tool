@@ -39,6 +39,9 @@ System *LogicsSpecsBuilder::parseSpecificationFile(std::string infile)
     parser.setBuildParseTree(true);
     LogicsContractsParser::SystemSpecContext * tree = parser.systemSpec();
 
+    if( parser.getNumberOfSyntaxErrors() > 0 )
+        messageError("Syntax errors in " + infile + ".");
+
     visitSystemSpec(tree);
 
     return _system;
@@ -221,8 +224,11 @@ LogicsSpecsBuilder::visitContract(LogicsContractsParser::ContractContext *ctx)
         visitDeclaration(ctx->declaration()[it]);
     }
 
-    visitAssumptions(ctx->assumptions());
-    visitGuarantees(ctx->guarantees());
+    // Assumptions and guarantees are optional in the grammar.
+    if( ctx->assumptions() != nullptr )
+        visitAssumptions(ctx->assumptions());
+    if( ctx->guarantees() != nullptr )
+        visitGuarantees(ctx->guarantees());
 
     _currContract = nullptr;
     return antlrcpp::Any();
