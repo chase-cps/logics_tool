@@ -16,9 +16,10 @@ The grammar of the language is in `grammar/LogicsContracts.g4`.
 >   instead of opening the console._
 > - -V _Enables verbose mode._
 
-The console provides the following commands: `show`, `compose`, `conjunction`,
-`disjunction`, `merging`, `quotient`, `separation`, `saturate`, `simplify`,
-`refinement`, `verify`, and `synthesize`.
+The console provides the following commands: `show`, `compose`, `conjoin`,
+`disjoin`, `merge`, `divide` (quotient), `separate`, `saturate`, `simplify`,
+`refines`, `verify`, and `synthesize`. The names `conjunction`, `quotient`,
+and `refinement` of the first version are still accepted.
 The `help` command shows their description.
 
 For instance, from the `RoboticJoints` directory of the [demos][DEMOS]
@@ -26,7 +27,7 @@ repository:
 
 `$> logics_tool -i specs.ltl -o /tmp/joints -c verification.chase`
 
-`$> NuSMV /tmp/joints/refinement.smv`
+`$> nuXmv /tmp/joints/refinement.smv`
 
 The tool is also available as a Python module (`pychase_logicsLang`). It
 requires the [core-library][CORE], the [chase-backends][BACKENDS], and the

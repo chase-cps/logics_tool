@@ -398,7 +398,7 @@ int Console::_computeQuotient(std::vector<std::string> &tokens) {
 
 int Console::_computeSeparation(std::vector<std::string> &tokens) {
     if(tokens.size() < 4) {
-        messageWarning("Wrong command. Usage: separation contract_1 contract_2 result [mode]");
+        messageWarning("Wrong command. Usage: separate contract_1 contract_2 result [mode]");
         return 1;
     }
     std::string c1_name = tokens[1];
