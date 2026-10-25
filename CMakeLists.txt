@@ -19,6 +19,10 @@ else()
 endif()
 
 project(LOGICS_TOOL VERSION 1.0)
+
+# The headers of the core library need C++17.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Use one Python for the headers and the module suffix (FindPython).
 find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 set(PYBIND11_FINDPYTHON ON)
