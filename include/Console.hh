@@ -78,6 +78,11 @@ namespace chase
         /// @return 1 if the command has been executed properly, 0 otherwise.
         int _computeQuotient( std::vector< std::string >& tokens );
 
+        /// @brief Method computing the Separation between two contracts.
+        /// @param tokens Tokens of the command.
+        /// @return 1 if the command has been executed properly, 0 otherwise.
+        int _computeSeparation( std::vector< std::string >& tokens );
+
         /// @brief Method showing the system or a contract.
         /// @param tokens Tokens of the command.
         /// @return 1 if the command has been executed properly, 0 otherwise.

@@ -396,6 +396,45 @@ int Console::_computeQuotient(std::vector<std::string> &tokens) {
     return 1;
 }
 
+int Console::_computeSeparation(std::vector<std::string> &tokens) {
+    if(tokens.size() < 4) {
+        messageWarning("Wrong command. Usage: separation contract_1 contract_2 result [mode]");
+        return 1;
+    }
+    std::string c1_name = tokens[1];
+    std::string c2_name = tokens[2];
+    std::string res_name = tokens[3];
+    std::string mode("name");
+    if(tokens.size() > 4)
+        mode = tokens[4];
+
+    Contract * c1 = nullptr;
+    Contract * c2 = nullptr;
+    for (auto c : _system->getContractsSet())
+    {
+        if(c->getName()->getString() == c1_name )
+        {
+            c1 = c;
+            continue;
+        }
+        if(c->getName()->getString() == c2_name )
+        {
+            c2 = c;
+            continue;
+        }
+    }
+    if( c1 == nullptr || c2 == nullptr ) {
+        messageWarning("Impossible to find the contracts.");
+        return 1;
+    }
+    names_projection_map m;
+    _createProjectionMap(m, mode, c1, c2);
+
+    auto r = Contract::separation(c1, c2, m, res_name);
+    _system->addContract(r);
+    return 1;
+}
+
 int Console::_stlContract(std::vector< std::string >& tokens)
 {
     std::string fileOut = _outDir + "output.py";
