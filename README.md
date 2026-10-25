@@ -17,7 +17,8 @@ The grammar of the language is in `grammar/LogicsContracts.g4`.
 > - -V _Enables verbose mode._
 
 The console provides the following commands: `show`, `compose`, `conjunction`,
-`quotient`, `saturate`, `simplify`, `refinement`, `verify`, and `synthesize`.
+`disjunction`, `merging`, `quotient`, `separation`, `saturate`, `simplify`,
+`refinement`, `verify`, and `synthesize`.
 The `help` command shows their description.
 
 For instance, from the `RoboticJoints` directory of the [demos][DEMOS]
