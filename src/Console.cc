@@ -116,7 +116,7 @@ void Console::_createProjectionMap(
 {
     if(mode == "manual")
         _createProjectionMapManual(m);
-    if(mode == "name")
+    else if(mode == "name")
         _createProjectionMapName(m, c1, c2);
     else
         _createProjectionMapFile(m, mode);
