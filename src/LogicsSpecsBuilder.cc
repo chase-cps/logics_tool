@@ -391,7 +391,13 @@ DataDeclaration *LogicsSpecsBuilder::findDeclaration(std::string name) {
         auto currDec = dynamic_cast<DataDeclaration *>(i);
         if( currDec == nullptr ) continue;
         if(currDec->getName()->getString() == name )
+        {
+            // The contract declares it too, so that the operations on the
+            // contract (composition, refinement, ...) see it.
+            if( _currContract != nullptr )
+                _currContract->declarations.push_back(currDec);
             return currDec;
+        }
     }
 
     return nullptr;

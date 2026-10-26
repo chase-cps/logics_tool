@@ -163,11 +163,13 @@ void Console::_createProjectionMapManual(names_projection_map &m)
 void Console::_createProjectionMapName(
         names_projection_map & m, Contract * c1, Contract * c2)
 {
+    // Variables, and constants (shared by the contracts of a system), with
+    // the same name are the same.
     for(auto & dec1 : c1->declarations)
     {
-        if(dec1->IsA() != variable_node) continue;
+        if(dec1->IsA() != variable_node && dec1->IsA() != constant_node) continue;
         for(auto & dec2 : c2->declarations ) {
-            if (dec2->IsA() != variable_node) continue;
+            if (dec2->IsA() != dec1->IsA()) continue;
 
             std::string n1 = dec1->getName()->getString();
             std::string n2 = dec2->getName()->getString();
