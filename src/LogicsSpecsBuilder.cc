@@ -109,11 +109,19 @@ LogicsSpecsBuilder::visitDeclaration(LogicsContractsParser::DeclarationContext *
     }
     else if (ctx->constantKW() != nullptr)
     {
-        int num = std::stoi(ctx->NUMBER()->getText().c_str());
-        dec = new Constant(
-                new Integer(),
-                new Name(name),
-                new IntegerValue(num));
+        std::string text = ctx->NUMBER()->getText();
+        if (type != nullptr && type->IsA() == real_node) {
+            dec = new Constant(type, new Name(name),
+                               new RealValue(std::stod(text)));
+        } else {
+            if (text.find('.') != std::string::npos)
+                messageError("The integer constant " + name +
+                             " has the value " + text + ".");
+            dec = new Constant(
+                    new Integer(),
+                    new Name(name),
+                    new IntegerValue(std::stoi(text)));
+        }
     }
     else if (ctx->propositionKw() != nullptr)
     {
