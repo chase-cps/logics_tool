@@ -185,6 +185,15 @@ int Console::_execSynthesis(std::vector<std::string> &tokens) {
     }
 }
 
+// NuSMV cannot read a file with real variables or real numbers.
+static void _hintNuXmv(Contract * contract)
+{
+    if (needsNuXmv(contract))
+        messageInfo("The file has real variables or real numbers. "
+                    "NuSMV cannot read it: check it with nuXmv "
+                    "(read_model, go_msat, then check_ltlspec_ic3).");
+}
+
 int Console::_execVerification(std::vector<std::string> &tokens) {
     std::string fileOut = _outDir + "output.smv";
     if(tokens.size() > 2)
@@ -232,6 +241,7 @@ int Console::_execVerification(std::vector<std::string> &tokens) {
     printer.print(contract);
     messageInfo(
             "NuSMV specification for synthesis stored in file: " + fileOut);
+    _hintNuXmv(contract);
     return 1;
 }
 
@@ -354,6 +364,7 @@ int Console::_checkRefinement(std::vector<std::string> &tokens) {
     printer.print(r);
     messageInfo(
             "NuSMV specification for synthesis stored in file: " + fileOut);
+    _hintNuXmv(r);
 
     return 1;
 }
