@@ -240,7 +240,7 @@ void Console::_printHelp(std::string cmd) {
                 << std::endl
                 << "\tsimplify\t: simplify the formulas of the system, or of contracts."
                 << std::endl
-                << "\tverify\t\t: verify compatibility and consistency of a contract."
+                << "\tverify\t\t: verify compatibility and consistency of a contract, and that A & G can hold."
                 << std::endl
                 << "\trefines\t\t: check whether a contract refines another"
                 << " (also: refinement)." << std::endl

@@ -235,12 +235,20 @@ int Console::_execVerification(std::vector<std::string> &tokens) {
     // Else...
     auto guarantees = static_cast< LogicFormula * >((*it).second);
 
+    // The assumptions and the guarantees hold together (A & G).
+    LogicFormula * feasible = Not(And(assumptions->clone(), guarantees->clone()));
+
     it->second = Not(guarantees);
 
     NuSMVPrinter printer(fileOut);
     printer.print(contract);
+    printer.printSpec(feasible, "A & G: false when the assumptions and the guarantees can hold together");
+    delete feasible;
     messageInfo(
-            "NuSMV specification for synthesis stored in file: " + fileOut);
+            "NuSMV specification for verification stored in file: " + fileOut
+            + ". The contract is compatible when the first LTLSPEC is false, "
+              "consistent when the second is false, and its assumptions and "
+              "guarantees can hold together (A & G) when the third is false.");
     _hintNuXmv(contract);
     return 1;
 }
