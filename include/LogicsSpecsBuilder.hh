@@ -76,6 +76,10 @@ namespace chase {
 
         DataDeclaration * findDeclaration(std::string name);
 
+        /// @brief Makes the identifiers of a value refer to the
+        /// declarations of the current contract (see findDeclaration).
+        void localizeIdentifiers(Value * v);
+
         Proposition * createPropositionFromRelation(
                 LogicsContractsParser::RelationContext * ctx);
 

@@ -83,7 +83,7 @@ int main( int argc, char * argv[] )
                 ret = console.run(line);
             }
         }
-        delete system;
+        // The system is not freed: the program ends here.
     } catch (const std::exception &) {
         return -1;
     }

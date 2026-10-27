@@ -20,7 +20,11 @@ LogicsSpecsBuilder::LogicsSpecsBuilder() :
 {
 }
 
-LogicsSpecsBuilder::~LogicsSpecsBuilder() = default;
+LogicsSpecsBuilder::~LogicsSpecsBuilder()
+{
+    // Each use of a proposition gets a copy of its relation.
+    for(auto & p : _map_props_values) delete p.second;
+}
 
 
 
@@ -117,6 +121,7 @@ LogicsSpecsBuilder::visitDeclaration(LogicsContractsParser::DeclarationContext *
             if (text.find('.') != std::string::npos)
                 messageError("The integer constant " + name +
                              " has the value " + text + ".");
+            delete type;
             dec = new Constant(
                     new Integer(),
                     new Name(name),
@@ -247,34 +252,34 @@ antlrcpp::Any
 LogicsSpecsBuilder::visitAssumptions(LogicsContractsParser::AssumptionsContext *ctx)
 {
     size_t i = 0;
-    auto vec = new std::vector< LogicFormula * >();
-    vec->push_back(createFormula(ctx->single_formula(i)->formula()));
+    std::vector< LogicFormula * > vec;
+    vec.push_back(createFormula(ctx->single_formula(i)->formula()));
     ++i;
 
     while(i < ctx->single_formula().size())
     {
-        vec->push_back(createFormula(ctx->single_formula(i)->formula()));
+        vec.push_back(createFormula(ctx->single_formula(i)->formula()));
         ++i;
     }
 
-    _currContract->addAssumptions(logic, LargeAnd(*vec));
+    _currContract->addAssumptions(logic, LargeAnd(vec));
     return antlrcpp::Any();
 }
 
 antlrcpp::Any
 LogicsSpecsBuilder::visitGuarantees(LogicsContractsParser::GuaranteesContext *ctx) {
     size_t i = 0;
-    auto vec = new std::vector< LogicFormula * >();
-    vec->push_back(createFormula(ctx->single_formula(i)->formula()));
+    std::vector< LogicFormula * > vec;
+    vec.push_back(createFormula(ctx->single_formula(i)->formula()));
     ++i;
 
     while(i < ctx->single_formula().size())
     {
-        vec->push_back(createFormula(ctx->single_formula(i)->formula()));
+        vec.push_back(createFormula(ctx->single_formula(i)->formula()));
         ++i;
     }
 
-    _currContract->addGuarantees(logic, LargeAnd(*vec));
+    _currContract->addGuarantees(logic, LargeAnd(vec));
 
     return antlrcpp::Any();
 }
@@ -366,7 +371,7 @@ Proposition *LogicsSpecsBuilder::createProposition(std::string name, bool primed
 
     auto p = _map_props_values.find(v);
     if(p != _map_props_values.end())
-        prop->setValue(p->second);
+        prop->setValue(p->second->clone());
     else
         prop->setValue(new Identifier(v, primed));
     return prop;
@@ -392,15 +397,39 @@ DataDeclaration *LogicsSpecsBuilder::findDeclaration(std::string name) {
         if( currDec == nullptr ) continue;
         if(currDec->getName()->getString() == name )
         {
-            // The contract declares it too, so that the operations on the
-            // contract (composition, refinement, ...) see it.
-            if( _currContract != nullptr )
-                _currContract->declarations.push_back(currDec);
-            return currDec;
+            if( _currContract == nullptr ) return currDec;
+            // The contract declares a copy, so that the operations on the
+            // contract (composition, refinement, ...) see it. The copy
+            // belongs to the contract, the original to the system.
+            auto copy = currDec->clone();
+            _currContract->addDeclaration(copy);
+            auto p = _map_props_values.find(dynamic_cast<Variable *>(currDec));
+            if(p != _map_props_values.end()) {
+                auto exp = p->second->clone();
+                _map_props_values.insert(std::pair<Variable *, Expression *>(
+                        static_cast<Variable *>(copy), exp));
+                localizeIdentifiers(exp);
+            }
+            return copy;
         }
     }
 
     return nullptr;
+}
+
+void LogicsSpecsBuilder::localizeIdentifiers(Value * v)
+{
+    if( v == nullptr ) return;
+    if( v->IsA() == identifier_node ) {
+        auto id = static_cast< Identifier * >(v);
+        auto d = findDeclaration(id->getDeclaration()->getName()->getString());
+        if( d != nullptr ) id->setDeclaration(d);
+    }
+    else if( v->IsA() == expression_node ) {
+        auto e = static_cast< Expression * >(v);
+        localizeIdentifiers(e->getOp1());
+        localizeIdentifiers(e->getOp2());
+    }
 }
 
 Proposition *LogicsSpecsBuilder::createPropositionFromRelation(
