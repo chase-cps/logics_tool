@@ -330,6 +330,11 @@ LogicsSpecsBuilder::createFormula(LogicsContractsParser::FormulaContext *ctx)
             lf = Until(
                     createFormula(ctx->formula(0)),
                     createFormula(ctx->formula(1)));
+        else
+            lf = new BinaryTemporalFormula(
+                    op_release,
+                    createFormula(ctx->formula(0)),
+                    createFormula(ctx->formula(1)));
         if(ctx->interval())
             lf->setInterval(createInterval(ctx->interval()));
         return lf;
