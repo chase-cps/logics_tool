@@ -1,5 +1,5 @@
 
-// Generated from //wsl$/Ubuntu-20.04/home/lora/chase/repo/src/logics_frontend/grammar\LogicsContracts.g4 by ANTLR 4.9.2
+// Generated from LogicsContracts.g4 by ANTLR 4.9.2
 
 #pragma once
 
@@ -23,19 +23,20 @@ public:
   };
 
   enum {
-    RuleBin_logic_op = 0, RuleUnary_logic_op = 1, RuleUnary_temp_op = 2, 
-    RuleBin_temp_op = 3, RuleRelation_op = 4, RuleBin_math_op = 5, RuleIntegerKW = 6, 
-    RuleBooleanKW = 7, RuleRealKW = 8, RuleVariableKW = 9, RuleInputKW = 10, 
-    RuleOutputKW = 11, RuleConstantKW = 12, RulePropositionKw = 13, RuleIsKw = 14, 
-    RuleTrueKW = 15, RuleFalseKW = 16, RuleContractKW = 17, RuleAssumptionsKW = 18, 
-    RuleGuaranteesKW = 19, RuleNameKw = 20, RuleCausality = 21, RuleLogic_constant = 22, 
-    RuleRange = 23, RuleInteger = 24, RuleReal = 25, RuleTypeKW = 26, RuleValue = 27, 
-    RuleLvalue = 28, RuleRvalue = 29, RulePrimed_ID = 30, RuleRelation = 31, 
-    RulePair = 32, RuleInterval_leftopen = 33, RuleInterval_rightopen = 34, 
-    RuleInterval_fullopen = 35, RuleInterval_closed = 36, RuleInterval = 37, 
-    RuleFormula = 38, RuleMinus_number = 39, RuleMinus_ID = 40, RuleAtom = 41, 
-    RuleSingle_formula = 42, RuleAssumptions = 43, RuleGuarantees = 44, 
-    RuleDeclaration = 45, RuleContract = 46, RuleName = 47, RuleSystemSpec = 48
+    RuleAnd_op = 0, RuleOr_op = 1, RuleImplies_op = 2, RuleIff_op = 3, RuleUnary_logic_op = 4, 
+    RuleUnary_temp_op = 5, RuleBin_temp_op = 6, RuleRelation_op = 7, RuleMul_op = 8, 
+    RuleAdd_op = 9, RuleIntegerKW = 10, RuleBooleanKW = 11, RuleRealKW = 12, 
+    RuleVariableKW = 13, RuleInputKW = 14, RuleOutputKW = 15, RuleConstantKW = 16, 
+    RulePropositionKw = 17, RuleIsKw = 18, RuleTrueKW = 19, RuleFalseKW = 20, 
+    RuleContractKW = 21, RuleAssumptionsKW = 22, RuleGuaranteesKW = 23, 
+    RuleNameKw = 24, RuleCausality = 25, RuleLogic_constant = 26, RuleRange = 27, 
+    RuleInteger = 28, RuleReal = 29, RuleTypeKW = 30, RuleValue = 31, RuleLvalue = 32, 
+    RuleRvalue = 33, RulePrimed_ID = 34, RuleRelation = 35, RulePair = 36, 
+    RuleInterval_leftopen = 37, RuleInterval_rightopen = 38, RuleInterval_fullopen = 39, 
+    RuleInterval_closed = 40, RuleInterval = 41, RuleFormula = 42, RuleMinus_number = 43, 
+    RuleMinus_ID = 44, RuleAtom = 45, RuleSingle_formula = 46, RuleAssumptions = 47, 
+    RuleGuarantees = 48, RuleDeclaration = 49, RuleContract = 50, RuleName = 51, 
+    RuleSystemSpec = 52
   };
 
   explicit LogicsContractsParser(antlr4::TokenStream *input);
@@ -48,12 +49,16 @@ public:
   virtual antlr4::dfa::Vocabulary& getVocabulary() const override;
 
 
-  class Bin_logic_opContext;
+  class And_opContext;
+  class Or_opContext;
+  class Implies_opContext;
+  class Iff_opContext;
   class Unary_logic_opContext;
   class Unary_temp_opContext;
   class Bin_temp_opContext;
   class Relation_opContext;
-  class Bin_math_opContext;
+  class Mul_opContext;
+  class Add_opContext;
   class IntegerKWContext;
   class BooleanKWContext;
   class RealKWContext;
@@ -98,13 +103,36 @@ public:
   class NameContext;
   class SystemSpecContext; 
 
-  class  Bin_logic_opContext : public antlr4::ParserRuleContext {
+  class  And_opContext : public antlr4::ParserRuleContext {
   public:
-    Bin_logic_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    And_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *AND();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  And_opContext* and_op();
+
+  class  Or_opContext : public antlr4::ParserRuleContext {
+  public:
+    Or_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *OR();
-    antlr4::tree::TerminalNode *IFF();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Or_opContext* or_op();
+
+  class  Implies_opContext : public antlr4::ParserRuleContext {
+  public:
+    Implies_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *IMPLIES();
 
 
@@ -112,7 +140,20 @@ public:
    
   };
 
-  Bin_logic_opContext* bin_logic_op();
+  Implies_opContext* implies_op();
+
+  class  Iff_opContext : public antlr4::ParserRuleContext {
+  public:
+    Iff_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *IFF();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Iff_opContext* iff_op();
 
   class  Unary_logic_opContext : public antlr4::ParserRuleContext {
   public:
@@ -174,12 +215,24 @@ public:
 
   Relation_opContext* relation_op();
 
-  class  Bin_math_opContext : public antlr4::ParserRuleContext {
+  class  Mul_opContext : public antlr4::ParserRuleContext {
   public:
-    Bin_math_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Mul_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *TIMES();
     antlr4::tree::TerminalNode *DIVIDE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Mul_opContext* mul_op();
+
+  class  Add_opContext : public antlr4::ParserRuleContext {
+  public:
+    Add_opContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *PLUS();
     antlr4::tree::TerminalNode *MINUS();
 
@@ -188,7 +241,7 @@ public:
    
   };
 
-  Bin_math_opContext* bin_math_op();
+  Add_opContext* add_op();
 
   class  IntegerKWContext : public antlr4::ParserRuleContext {
   public:
@@ -462,18 +515,19 @@ public:
   public:
     ValueContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LBRACKET();
+    std::vector<ValueContext *> value();
+    ValueContext* value(size_t i);
+    antlr4::tree::TerminalNode *RBRACKET();
     Primed_IDContext *primed_ID();
     antlr4::tree::TerminalNode *ID();
     Minus_IDContext *minus_ID();
     Minus_numberContext *minus_number();
     antlr4::tree::TerminalNode *NUMBER();
     antlr4::tree::TerminalNode *PROBABILITY();
-    antlr4::tree::TerminalNode *LBRACKET();
     FormulaContext *formula();
-    antlr4::tree::TerminalNode *RBRACKET();
-    std::vector<ValueContext *> value();
-    ValueContext* value(size_t i);
-    Bin_math_opContext *bin_math_op();
+    Mul_opContext *mul_op();
+    Add_opContext *add_op();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -639,8 +693,11 @@ public:
     Unary_temp_opContext *unary_temp_op();
     IntervalContext *interval();
     AtomContext *atom();
-    Bin_logic_opContext *bin_logic_op();
     Bin_temp_opContext *bin_temp_op();
+    And_opContext *and_op();
+    Or_opContext *or_op();
+    Implies_opContext *implies_op();
+    Iff_opContext *iff_op();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

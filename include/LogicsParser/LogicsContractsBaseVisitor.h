@@ -1,5 +1,5 @@
 
-// Generated from //wsl$/Ubuntu-20.04/home/lora/chase/repo/src/logics_frontend/grammar\LogicsContracts.g4 by ANTLR 4.9.2
+// Generated from LogicsContracts.g4 by ANTLR 4.9.2
 
 #pragma once
 
@@ -15,7 +15,19 @@
 class  LogicsContractsBaseVisitor : public LogicsContractsVisitor {
 public:
 
-  virtual antlrcpp::Any visitBin_logic_op(LogicsContractsParser::Bin_logic_opContext *ctx) override {
+  virtual antlrcpp::Any visitAnd_op(LogicsContractsParser::And_opContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitOr_op(LogicsContractsParser::Or_opContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitImplies_op(LogicsContractsParser::Implies_opContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitIff_op(LogicsContractsParser::Iff_opContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -35,7 +47,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBin_math_op(LogicsContractsParser::Bin_math_opContext *ctx) override {
+  virtual antlrcpp::Any visitMul_op(LogicsContractsParser::Mul_opContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAdd_op(LogicsContractsParser::Add_opContext *ctx) override {
     return visitChildren(ctx);
   }
 

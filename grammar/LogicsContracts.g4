@@ -25,7 +25,10 @@ IFF:        '<->';
 
 COLON:      ':';
 
-bin_logic_op: AND | OR | IFF | IMPLIES;
+and_op: AND;
+or_op: OR;
+implies_op: IMPLIES;
+iff_op: IFF;
 unary_logic_op: NOT;
 
 /**
@@ -64,7 +67,8 @@ MINUS:  '-';
 TIMES:  '*';
 DIVIDE: '/';
 
-bin_math_op: TIMES | DIVIDE | PLUS | MINUS;
+mul_op: TIMES | DIVIDE;
+add_op: PLUS | MINUS;
 
 LBRACKET: '(';
 RBRACKET: ')';
@@ -114,10 +118,12 @@ typeKW: integer | real | booleanKW;
   GRAMMAR RULES
 **/
 
-value: value bin_math_op value | primed_ID |
-        ID | minus_ID | minus_number | NUMBER |
-        PROBABILITY LBRACKET formula RBRACKET |
-        LBRACKET value RBRACKET;
+// The precedence of the operators is the usual one: * and / before + and -.
+value: LBRACKET value RBRACKET |
+        value mul_op value |
+        value add_op value |
+        primed_ID | ID | minus_ID | minus_number | NUMBER |
+        PROBABILITY LBRACKET formula RBRACKET;
 
 lvalue: value;
 rvalue: value;
@@ -148,12 +154,18 @@ interval:
     interval_leftopen |
     interval_rightopen;
 
+// The precedence of the operators is that of LTL tools (Spot, NuSMV,
+// nuXmv), from the tightest: the unary ! X F G, then U R, &, |, ->, <->.
+// U, R and -> group to the right: a -> b -> c is a -> (b -> c).
 formula:
     LBRACKET formula RBRACKET |
     unary_logic_op  formula |
-    formula bin_logic_op formula |
     unary_temp_op (interval)? formula |
-    formula bin_temp_op (interval)? formula |
+    <assoc=right> formula bin_temp_op (interval)? formula |
+    formula and_op formula |
+    formula or_op formula |
+    <assoc=right> formula implies_op formula |
+    formula iff_op formula |
     atom;
 
 minus_number: MINUS NUMBER;

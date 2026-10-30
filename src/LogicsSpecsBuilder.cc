@@ -191,7 +191,7 @@ Value *LogicsSpecsBuilder::createValue(LogicsContractsParser::ValueContext *ctx)
             return createValue(ctx->value(0));
         }
 
-        std::string math_op = ctx->bin_math_op()->getText();
+        std::string math_op = ctx->children[1]->getText();
         Operator op = op_plus;
         if(math_op == "+") op = op_plus;
         if(math_op == "-") op = op_minus;
@@ -308,21 +308,18 @@ LogicsSpecsBuilder::createFormula(LogicsContractsParser::FormulaContext *ctx)
             lf->setInterval(createInterval(ctx->interval()));
         return lf;
     }
-    if(ctx->bin_logic_op())
-    {
-        if(ctx->bin_logic_op()->AND())
-            return And(createFormula(ctx->formula(0)),
+    if(ctx->and_op())
+        return And(createFormula(ctx->formula(0)),
+                   createFormula(ctx->formula(1)));
+    if(ctx->or_op())
+        return Or(createFormula(ctx->formula(0)),
+                  createFormula(ctx->formula(1)));
+    if(ctx->implies_op())
+        return Implies(createFormula(ctx->formula(0)),
                        createFormula(ctx->formula(1)));
-        if(ctx->bin_logic_op()->OR())
-            return Or(createFormula(ctx->formula(0)),
-                      createFormula(ctx->formula(1)));
-        if(ctx->bin_logic_op()->IMPLIES())
-            return Implies(createFormula(ctx->formula(0)),
-                           createFormula(ctx->formula(1)));
-        if(ctx->bin_logic_op()->IFF())
-            return Iff(createFormula(ctx->formula(0)),
-                       createFormula(ctx->formula(1)));
-    }
+    if(ctx->iff_op())
+        return Iff(createFormula(ctx->formula(0)),
+                   createFormula(ctx->formula(1)));
     if(ctx->bin_temp_op())
     {
         BinaryTemporalFormula * lf;

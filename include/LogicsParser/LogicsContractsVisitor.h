@@ -1,5 +1,5 @@
 
-// Generated from //wsl$/Ubuntu-20.04/home/lora/chase/repo/src/logics_frontend/grammar\LogicsContracts.g4 by ANTLR 4.9.2
+// Generated from LogicsContracts.g4 by ANTLR 4.9.2
 
 #pragma once
 
@@ -19,7 +19,13 @@ public:
   /**
    * Visit parse trees produced by LogicsContractsParser.
    */
-    virtual antlrcpp::Any visitBin_logic_op(LogicsContractsParser::Bin_logic_opContext *context) = 0;
+    virtual antlrcpp::Any visitAnd_op(LogicsContractsParser::And_opContext *context) = 0;
+
+    virtual antlrcpp::Any visitOr_op(LogicsContractsParser::Or_opContext *context) = 0;
+
+    virtual antlrcpp::Any visitImplies_op(LogicsContractsParser::Implies_opContext *context) = 0;
+
+    virtual antlrcpp::Any visitIff_op(LogicsContractsParser::Iff_opContext *context) = 0;
 
     virtual antlrcpp::Any visitUnary_logic_op(LogicsContractsParser::Unary_logic_opContext *context) = 0;
 
@@ -29,7 +35,9 @@ public:
 
     virtual antlrcpp::Any visitRelation_op(LogicsContractsParser::Relation_opContext *context) = 0;
 
-    virtual antlrcpp::Any visitBin_math_op(LogicsContractsParser::Bin_math_opContext *context) = 0;
+    virtual antlrcpp::Any visitMul_op(LogicsContractsParser::Mul_opContext *context) = 0;
+
+    virtual antlrcpp::Any visitAdd_op(LogicsContractsParser::Add_opContext *context) = 0;
 
     virtual antlrcpp::Any visitIntegerKW(LogicsContractsParser::IntegerKWContext *context) = 0;
 
