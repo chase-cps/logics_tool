@@ -221,7 +221,7 @@ Identifier *LogicsSpecsBuilder::createIdentifier(std::string name, bool primed)
     if( dd != nullptr )
         return new Identifier(dd, primed);
     else
-        messageError(name + "is not declared in the current scope.");
+        messageError(name + " is not declared in the current scope.");
     return nullptr;
 }
 
