@@ -119,8 +119,10 @@ int Console::_execSynthesis(std::vector<std::string> &tokens) {
     std::string solver = "slugs";
     if(tokens.size() > 2)
         fileOut =  _outDir + std::string(tokens[2]);
-    if(tokens.size() < 2)
+    if(tokens.size() < 2) {
         messageWarning("Wrong command. Usage: synthesize contract file");
+        return 1;
+    }
     if(tokens.size() > 3)
         solver = std::string(tokens[3]);
 
@@ -139,7 +141,10 @@ int Console::_execSynthesis(std::vector<std::string> &tokens) {
             break;
         }
     }
-    if(contract == nullptr) return 1;
+    if(contract == nullptr) {
+        messageWarning("No contract named " + contract_name);
+        return 1;
+    }
 
     if(solver == "all")
     {
@@ -530,8 +535,10 @@ int Console::_stlContract(std::vector< std::string >& tokens)
     std::string fileOut = _outDir + "output.py";
     if(tokens.size() > 2)
         fileOut = _outDir + std::string(tokens[2]);
-    if(tokens.size() < 2)
+    if(tokens.size() < 2) {
         messageWarning("Wrong command. Usage: stl contract file");
+        return 1;
+    }
 
 
     if(fileOut.find(".py") == std::string::npos)
@@ -546,6 +553,11 @@ int Console::_stlContract(std::vector< std::string >& tokens)
             contract = c;
             break;
         }
+    }
+
+    if(contract == nullptr) {
+        messageWarning("No contract named " + contract_name);
+        return 1;
     }
 
     PySTLPrinter printer(fileOut);
